@@ -1,0 +1,13 @@
+Got automated booting working via the serial port. See README for
+instructions.
+
+Next step is to look up details on the jtag interface.
+
+Also move the makefile around to support a directory full of C and asm
+sources that all get compiled.
+
+I still understand the linker.ld script very little. It has to be one
+of the most obtuce systems.
+
+
+

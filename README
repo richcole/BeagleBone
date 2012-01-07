@@ -1,0 +1,36 @@
+= Beagle Bone Custom OS and Loader
+
+== Introduction
+
+This code is for working witht the Beagle Bone. It is for running a
+custom OS on the beagle bone.
+
+== Instructions
+
+First bootstrap your system to 
+
+  make bootstrap
+
+Next plug in your beagle bone to the serial port. Now execute
+
+  make run
+
+Next hit the reset switch on your beagle bone. This will build the
+kernel and run a program called serial that will load the kernel and
+then execute it.
+
+The serial program outputs it's interactions over the USB serial port.
+You should see it end with
+
+  ## Starting application at 0x82000000 ...
+  !
+
+Congratulations, you just executed your first custom OS level program on
+the beagle bone.
+
+== Resources
+
+  - You can look in the notes.txt for a development log.
+  - Manual instructions for loading an OS: http://wiki.osdev.org/Beagleboard
+  - Beagle Bone getting started http://beagleboard.org/static/beaglebone/a3/README.htm
+
