@@ -20,7 +20,9 @@ harder to understand when reading someone elses file.
 Kernel at this stage is unchanged. I should be able to jump into C
 code however.
 
+==
 
+Added code to be able to jump into C. Changed asm extension to .s.
 
 
 

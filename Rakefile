@@ -38,7 +38,10 @@ class Builder
     Dir.glob(src_dir / "*.cpp").each do |src_file| 
       objs << compile(src_file)
     end
-    Dir.glob(src_dir / "*.asm").each do |src_file| 
+    Dir.glob(src_dir / "*.c").each do |src_file| 
+      objs << compile(src_file)
+    end
+    Dir.glob(src_dir / "*.s").each do |src_file| 
       objs << assemble(src_file)
     end
   end

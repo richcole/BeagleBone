@@ -1,10 +1,14 @@
-/* rammap */
-MEMORY
-{
-    ram : ORIGIN = 0x82000000, LENGTH = 0x10000
-}
- 
+ENTRY(__kernel)
 SECTIONS
 {
-    .text : { *(.text*) } > ram
+	. = 0x82000000;
+	.text : {
+		*(.kernel)
+		*(.text)
+	}
+	
+	.data : { *(.data) }
+	__bss_start__ = .;
+	.bss : { *(.bss) }
+	__bss_end__ = .;
 }
