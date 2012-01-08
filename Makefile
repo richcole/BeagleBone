@@ -13,8 +13,6 @@ $(BUILD_DIR)/marker:
 $(BUILD_DIR)/boot.bin: boot.asm $(BUILD_DIR)/marker
 	$(ARMGNU)-as boot.asm -o $(BUILD_DIR)/boot.o
 	$(ARMGNU)-ld -T linker.ld $(BUILD_DIR)/boot.o -o $(BUILD_DIR)/boot.elf
-	$(ARMGNU)-objdump -D $(BUILD_DIR)/boot.elf > $(BUILD_DIR)/boot.list
-	$(ARMGNU)-objcopy $(BUILD_DIR)/boot.elf -O srec $(BUILD_DIR)/boot.srec
 	$(ARMGNU)-objcopy $(BUILD_DIR)/boot.elf -O binary $(BUILD_DIR)/boot.bin
 
 $(BUILD_DIR)/serial: serial.c $(BUILD_DIR)/marker
