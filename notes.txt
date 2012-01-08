@@ -1,3 +1,5 @@
+== 
+
 Got automated booting working via the serial port. See README for
 instructions.
 
@@ -8,6 +10,17 @@ sources that all get compiled.
 
 I still understand the linker.ld script very little. It has to be one
 of the most obtuce systems.
+
+==
+
+Changed from make to rake and split kernel build and serial build into
+separate modules. Rake is superior to make, but perhaps a little
+harder to understand when reading someone elses file.
+
+Kernel at this stage is unchanged. I should be able to jump into C
+code however.
+
+
 
 
 

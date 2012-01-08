@@ -9,11 +9,11 @@ custom OS on the beagle bone.
 
 First bootstrap your system to 
 
-  make bootstrap
+  rake bootstrap
 
 Next plug in your beagle bone to the serial port. Now execute
 
-  make run
+  rake run
 
 Next hit the reset switch on your beagle bone. This will build the
 kernel and run a program called serial that will load the kernel and

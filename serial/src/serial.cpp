@@ -36,8 +36,8 @@ struct reply_processor : processor {
   struct channel *reply_channel;
   char   buf[4096];
   int    head;
-  char   *search_string;
-  char   *reply_string;
+  char   const* search_string;
+  char   const* reply_string;
   int    state;
 };
 
@@ -45,16 +45,16 @@ struct pipe_processor : processor {
   struct channel *reply_channel;
   char   buf[4096];
   int    head;
-  char   *search_string;
-  char   *reply_string;
+  char   const* search_string;
+  char   const* reply_string;
   int    state;
   int    input_fds[2];
   int    output_fds[2];
   int    pid;
-  char   **argv;
+  char   const * const * argv;
   struct channel *c_input;
   struct channel *c_output;
-  char   *cmd;
+  char   const *cmd;
 };
 
 struct channel {
@@ -221,7 +221,7 @@ void pipe_processor_handler(
         check(close(p->input_fds[0]));
         check(close(p->output_fds[0]));
         check(close(p->output_fds[1]));
-        check(execvp(p->cmd, p->argv));
+        check(execvp(p->cmd, (char* const*)(p->argv)));
         fprintf(stderr, "execvp failed\n");
         exit(-1);
       }
@@ -261,7 +261,7 @@ void pipe_processor_handler(
   }
 };
 
-struct processor* new_reply_processor(struct channel *reply_channel, char *search_string, char *reply_string, int num_actions) {
+struct processor* new_reply_processor(struct channel *reply_channel, char const* search_string, char const* reply_string, int num_actions) {
   struct reply_processor *p = 
     (struct reply_processor *) calloc(1, sizeof(struct reply_processor));
   p->processor = &reply_processor_handler;
@@ -272,7 +272,7 @@ struct processor* new_reply_processor(struct channel *reply_channel, char *searc
   return (struct processor *)p;
 };
 
-struct processor* new_pipe_processor(struct channel *reply_channel, char *search_string, char *cmd, char **argv) {
+struct processor* new_pipe_processor(struct channel *reply_channel, char const* search_string, char const *cmd, char const * const * argv) {
   struct pipe_processor *p = 
     (struct pipe_processor *) calloc(1, sizeof(struct pipe_processor));
   p->processor = &pipe_processor_handler;
@@ -363,7 +363,13 @@ void signal_handler_PIPE (int status) {
   fprintf(stderr, "PIPE Signal %d\n", status);
 };
 
-int main() {
+int main(int argc, char **argv) {
+
+  if ( argc != 2 ) {
+    fprintf(stderr, "Usage: %s FILENAME\n", argv[0]);
+    exit(1);
+  }
+  char const* binary_filename = argv[1];
 
   struct sigaction io_signal_action;
   struct context context;
@@ -392,8 +398,8 @@ int main() {
     new_reply_processor(context.serial, "U-Boot# ", "loady\n", 1) 
   );
 
-  char *cmd = "/usr/bin/sx";
-  char *args[] = { cmd, "--ymodem", "build/boot.bin", 0 };
+  char const* cmd = "/usr/bin/sx";
+  char const* const args[] = { cmd, "--ymodem", binary_filename, 0 };
   channel_add_processor(context.serial, 
     new_pipe_processor(context.serial, 
       "## Ready for binary (ymodem) download to 0x82000000 at 115200 bps...", 

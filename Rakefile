@@ -142,7 +142,13 @@ end
 
 task :default => builders.map { |x| x.default }.flatten 
 
-task :run => [b.binary, s.binary] do
-  sh "#{s.serial} #{b.binary}"
+task :bootstrap do
+  run "sudo adduser $USER dialout"
+  run "sudo apt-get install gcc-4.4-arm-linux-gnueabi"
+  run "sudo modprobe ftdi_sio vendor=0x0403 product=0xa6d0"
+end
+
+task :run => [k.binary, s.binary] do
+  sh "#{s.binary} #{k.binary}"
 end
   
